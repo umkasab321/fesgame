@@ -45,8 +45,10 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = mainwindow.cpp 
-OBJECTS       = mainwindow.o
+SOURCES       = main.cpp \
+		mainwindow.cpp 
+OBJECTS       = main.o \
+		mainwindow.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -266,7 +268,7 @@ qmake_all: FORCE
 
 dist: 
 	@test -d .tmp/fesgame1.0.0 || mkdir -p .tmp/fesgame1.0.0
-	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/fesgame1.0.0/ && $(COPY_FILE) --parents mainwindow.cpp .tmp/fesgame1.0.0/ && (cd `dirname .tmp/fesgame1.0.0` && $(TAR) fesgame1.0.0.tar fesgame1.0.0 && $(COMPRESS) fesgame1.0.0.tar) && $(MOVE) `dirname .tmp/fesgame1.0.0`/fesgame1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/fesgame1.0.0
+	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/fesgame1.0.0/ && $(COPY_FILE) --parents mainwindow.h .tmp/fesgame1.0.0/ && $(COPY_FILE) --parents main.cpp mainwindow.cpp .tmp/fesgame1.0.0/ && (cd `dirname .tmp/fesgame1.0.0` && $(TAR) fesgame1.0.0.tar fesgame1.0.0 && $(COMPRESS) fesgame1.0.0.tar) && $(MOVE) `dirname .tmp/fesgame1.0.0`/fesgame1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/fesgame1.0.0
 
 
 clean:compiler_clean 
@@ -303,7 +305,10 @@ compiler_clean:
 
 ####### Compile
 
-mainwindow.o: mainwindow.cpp 
+main.o: main.cpp mainwindow.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
+
+mainwindow.o: mainwindow.cpp mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o mainwindow.cpp
 
 ####### Install
